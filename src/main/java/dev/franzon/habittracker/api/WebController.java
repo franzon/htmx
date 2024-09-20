@@ -1,43 +1,87 @@
 package dev.franzon.habittracker.api;
 
-import dev.franzon.habittracker.dto.HabitoDeHojeDTO;
+import dev.franzon.habittracker.dto.Habito;
+import dev.franzon.habittracker.dto.Recorrencia;
+import dev.franzon.habittracker.dto.request.AtualizarHabitoRequest;
+import dev.franzon.habittracker.dto.request.CriarHabitoRequest;
+import dev.franzon.habittracker.service.HabitosService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@RequiredArgsConstructor
 @Controller
 public class WebController {
 
-    public static List<HabitoDeHojeDTO> habitosDeHoje = List.of(
-            new HabitoDeHojeDTO(1L, "Correr", true),
-            new HabitoDeHojeDTO(2L, "Arrumar a cama", true),
-            new HabitoDeHojeDTO(3L, "Lavar louça", false),
-            new HabitoDeHojeDTO(4L, "Ler um livro", true),
-            new HabitoDeHojeDTO(5L, "Meditar", true),
-            new HabitoDeHojeDTO(6L, "Fazer exercícios de alongamento", true),
-            new HabitoDeHojeDTO(7L, "Tomar café da manhã saudável", true),
-            new HabitoDeHojeDTO(8L, "Estudar um novo idioma", false),
-            new HabitoDeHojeDTO(9L, "Escrever no diário", true),
-            new HabitoDeHojeDTO(10L, "Organizar a mesa de trabalho", true),
-            new HabitoDeHojeDTO(11L, "Beber 2 litros de água", true),
-            new HabitoDeHojeDTO(12L, "Fazer uma caminhada", true),
-            new HabitoDeHojeDTO(13L, "Limpar o banheiro", false),
-            new HabitoDeHojeDTO(14L, "Ouvir um podcast", true),
-            new HabitoDeHojeDTO(15L, "Planejar o dia", true),
-            new HabitoDeHojeDTO(16L, "Fazer uma refeição balanceada", true),
-            new HabitoDeHojeDTO(17L, "Assistir a um documentário", false),
-            new HabitoDeHojeDTO(18L, "Fazer uma pausa para relaxar", true),
-            new HabitoDeHojeDTO(19L, "Jogar um jogo de tabuleiro", false),
-            new HabitoDeHojeDTO(20L, "Ligar para um amigo", true)
-    );
-
+    private final HabitosService habitosService;
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("habitosDeHoje", habitosDeHoje);
-
         return "index";
+    }
+
+    @GetMapping("/habitos")
+    public String listarHabitos(Model model) {
+        var habitos = habitosService.listarHabitos();
+        model.addAttribute("habitos", habitos);
+
+        return "habitos";
+    }
+
+    @GetMapping("/habitos/{id}")
+    public String detalhesHabito(Model model, @PathVariable("id") Long id) {
+        var habito = habitosService.detalhesHabito(id);
+
+        if (habito.isEmpty())
+            throw new RuntimeException("erro1!!!");
+
+        model.addAttribute("habito", habito.get());
+
+        return "detalhes-habito";
+    }
+
+
+    @GetMapping("/criar-habito")
+    public String criarHabito(Model model) {
+        return "criar-habito";
+    }
+
+    @PostMapping(value = "/criar-habito")
+    public String criarHabitoPost(@ModelAttribute CriarHabitoRequest criarHabitoRequest, Model model) {
+        Habito habito = Habito.builder()
+                .titulo(criarHabitoRequest.getTitulo())
+                .recorrencia(Recorrencia.valueOf(criarHabitoRequest.getRecorrencia()))
+                .ocorrencias(criarHabitoRequest.getOcorrencias())
+                .build();
+
+        habitosService.criarHabito(habito);
+
+        var habitos = habitosService.listarHabitos();
+        model.addAttribute("habitos", habitos);
+
+        return "redirect:habitos";
+    }
+
+    @PostMapping(value = "/atualizar-habito")
+    public String atualizarHabitoPost(@ModelAttribute AtualizarHabitoRequest atualizarHabitoRequest, Model model) {
+        Habito habito = Habito.builder()
+                .id(atualizarHabitoRequest.getId())
+                .titulo(atualizarHabitoRequest.getTitulo())
+                .recorrencia(Recorrencia.valueOf(atualizarHabitoRequest.getRecorrencia()))
+                .ocorrencias(atualizarHabitoRequest.getOcorrencias())
+                .build();
+
+        habitosService.atualizarHabito(habito);
+
+        var habitos = habitosService.listarHabitos();
+        model.addAttribute("habitos", habitos);
+
+        return "redirect:habitos";
+    }
+
+    @DeleteMapping(value = "/excluir-habito/{id}")
+    public void excluirHabito(@PathVariable("id") Long id) {
+        habitosService.excluirHabito(id);
     }
 }

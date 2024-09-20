@@ -1,0 +1,11 @@
+package gg.jte.generated.ondemand;
+public final class JteindexGenerated {
+	public static final String JTE_NAME = "index.jte";
+	public static final int[] JTE_LINE_INFO = {45,45,45,45,45,45,45,45,45,45,45};
+	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor) {
+		jteOutput.writeContent("<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>SimpleHabits</title>\r\n    <script src=\"https://cdn.tailwindcss.com\"></script>\r\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\" rel=\"stylesheet\">\r\n</head>\r\n\r\n<body class=\"bg-slate-100\">\r\n    <div class=\"p-4 bg-blue-900 text-white flex\">\r\n        <span class=\"grow  text-lg font-bold font-mono\">\r\n            <a href=\"/\">SimpleHabits</a>\r\n        </span>\r\n        <a href=\"habitos\">\r\n            <i class=\"fa-solid fa-list-check\"></i>\r\n        </a>\r\n    </div>\r\n\r\n    <div class=\"p-4\">\r\n        <span class=\"font-mono\">Estes são os hábitos pendentes atualmente...</span>\r\n    </div>\r\n\r\n    <div class=\"p-4 flex flex-col gap-3\">\r\n        <div class=\"bg-gray-300 p-6 rounded-md shadow-sm max-w-lg\">\r\n            <div class=\"flex\">\r\n                <span class=\"grow line-through\">Correr</span>\r\n                <input type=\"checkbox\" class=\"w-6 accent-blue-900\" checked />\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"bg-white p-6 rounded-md shadow-md flex max-w-lg\">\r\n            <span class=\"grow font-bold\">Tomar café</span>\r\n            <input type=\"checkbox\" class=\"w-6 accent-blue-900\" />\r\n        </div>\r\n\r\n        <div class=\"bg-red-200 p-6 rounded-md shadow-md flex max-w-lg\">\r\n            <span class=\"grow font-bold\">Arrumar a cama</span>\r\n            <input type=\"checkbox\" class=\"w-6 accent-blue-900\" />\r\n        </div>\r\n    </div>\r\n</body>\r\n\r\n</html>");
+	}
+	public static void renderMap(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.Map<String, Object> params) {
+		render(jteOutput, jteHtmlInterceptor);
+	}
+}
