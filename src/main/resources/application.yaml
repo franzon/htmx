@@ -1,0 +1,15 @@
+spring.application.name: habittracker
+spring.datasource.url: jdbc:postgresql://localhost:5432/habittracker
+spring.datasource.username: postgres
+spring.datasource.password: 1234
+spring.datasource.driver-class-name: org.postgresql.Driver
+spring:
+  thymeleaf: # Thymeleaf
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0

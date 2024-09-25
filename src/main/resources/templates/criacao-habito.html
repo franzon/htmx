@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SimpleHabits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+<nav class="navbar text-bg-primary bg-primary p-3">
+    <a class="navbar-brand fs-3 fw-bold text-bg-primary" href="/">SimpleHabits</a>
+</nav>
+<div class="container-fluid p-3" style="max-width: 600px">
+    <form class="needs-validation" action="/habitos" method="post">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" id="titulo" name="titulo" class="form-control" required/>
+        </div>
+        <div class="mb-3">
+            <label for="ocorrencias" class="form-label">Ocorrências</label>
+            <input type="number" id="ocorrencias" name="ocorrencias" class="form-control" min="1" max="10" value="1" required/>
+        </div>
+        <div class="mb-3">
+            <label for="recorrencia" class="form-label">Recorrência</label>
+            <select class="form-select" id="recorrencia" name="recorrencia" required>
+                <option value="DIARIO">Diário</option>
+                <option value="SEMANAL">Semanal</option>
+                <option value="QUINZENAL">Quizenal</option>
+                <option value="MENSAL">Mensal</option>
+            </select>
+        </div>
+        <div class="position-absolute bottom-0 end-0 m-3">
+            <button class="btn btn-primary btn-lg" type="submit">
+                <i class="bi bi-check"></i> Salvar
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

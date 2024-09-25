@@ -1,4 +1,4 @@
-package dev.franzon.habittracker.api;
+package dev.franzon.habittracker.api.web;
 
 import dev.franzon.habittracker.dto.Habito;
 import dev.franzon.habittracker.dto.Recorrencia;
@@ -12,25 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
-public class WebController {
+@RequestMapping("/habitos")
+public class HabitosController {
 
     private final HabitosService habitosService;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        return "index";
-    }
-
-    @GetMapping("/habitos")
-    public String listarHabitos(Model model) {
+    @GetMapping
+    public String paginaListarHabitos(Model model) {
         var habitos = habitosService.listarHabitos();
         model.addAttribute("habitos", habitos);
 
-        return "habitos";
+        return "lista-habitos";
     }
 
-    @GetMapping("/habitos/{id}")
-    public String detalhesHabito(Model model, @PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public String paginaDetalhesHabito(Model model, @PathVariable("id") Long id) {
         var habito = habitosService.detalhesHabito(id);
 
         if (habito.isEmpty())
@@ -41,14 +37,13 @@ public class WebController {
         return "detalhes-habito";
     }
 
-
-    @GetMapping("/criar-habito")
-    public String criarHabito(Model model) {
-        return "criar-habito";
+    @GetMapping("/criacao")
+    public String paginaCriacaoHabito() {
+        return "criacao-habito";
     }
 
-    @PostMapping(value = "/criar-habito")
-    public String criarHabitoPost(@ModelAttribute CriarHabitoRequest criarHabitoRequest, Model model) {
+    @PostMapping
+    public String criarHabito(@ModelAttribute CriarHabitoRequest criarHabitoRequest, Model model) {
         Habito habito = Habito.builder()
                 .titulo(criarHabitoRequest.getTitulo())
                 .recorrencia(Recorrencia.valueOf(criarHabitoRequest.getRecorrencia()))
@@ -57,14 +52,11 @@ public class WebController {
 
         habitosService.criarHabito(habito);
 
-        var habitos = habitosService.listarHabitos();
-        model.addAttribute("habitos", habitos);
-
-        return "redirect:habitos";
+        return "redirect:/habitos";
     }
 
-    @PostMapping(value = "/atualizar-habito")
-    public String atualizarHabitoPost(@ModelAttribute AtualizarHabitoRequest atualizarHabitoRequest, Model model) {
+    @PostMapping("/atualizar")
+    public String atualizarHabito(@ModelAttribute AtualizarHabitoRequest atualizarHabitoRequest, Model model) {
         Habito habito = Habito.builder()
                 .id(atualizarHabitoRequest.getId())
                 .titulo(atualizarHabitoRequest.getTitulo())
@@ -74,13 +66,10 @@ public class WebController {
 
         habitosService.atualizarHabito(habito);
 
-        var habitos = habitosService.listarHabitos();
-        model.addAttribute("habitos", habitos);
-
-        return "redirect:habitos";
+        return "redirect:/habitos";
     }
 
-    @DeleteMapping(value = "/excluir-habito/{id}")
+    @DeleteMapping("/{id}")
     public void excluirHabito(@PathVariable("id") Long id) {
         habitosService.excluirHabito(id);
     }
