@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +27,7 @@ public class HabitoRepository {
                     rs.getInt("ocorrencias")
             );
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao mapear para a classe Habito", e);
         }
     }
 
@@ -38,16 +36,7 @@ public class HabitoRepository {
     }
 
     public void criarHabito(Habito habito) {
-        try {
-            PreparedStatement statement = jdbcTemplate.getDataSource().getConnection().prepareStatement("insert into habito (titulo, recorrencia, ocorrencias) values (?, ?, ?)");
-            statement.setString(1, habito.getTitulo());
-            statement.setObject(2, habito.getRecorrencia(), Types.OTHER);
-            statement.setInt(3, habito.getOcorrencias());
-
-            statement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update("insert into habito (titulo, recorrencia, ocorrencias) values (?, ?::recorrencia_type, ?)", habito.getTitulo(), habito.getRecorrencia().name(), habito.getOcorrencias());
     }
 
     public Optional<Habito> detalhesHabito(Long id) {
@@ -55,27 +44,10 @@ public class HabitoRepository {
     }
 
     public void atualizarHabito(Habito habito) {
-        try {
-            PreparedStatement statement = jdbcTemplate.getDataSource().getConnection().prepareStatement("update habito set titulo = ?, recorrencia = ?, ocorrencias = ? where id = ?");
-            statement.setString(1, habito.getTitulo());
-            statement.setObject(2, habito.getRecorrencia(), Types.OTHER);
-            statement.setInt(3, habito.getOcorrencias());
-            statement.setLong(4, habito.getId());
-
-            statement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update("update habito set titulo = ?, recorrencia = ?::recorrencia_type, ocorrencias = ? where id = ?", habito.getTitulo(), habito.getRecorrencia().name(), habito.getOcorrencias(), habito.getId());
     }
 
     public void excluirHabito(Long id) {
-        try {
-            PreparedStatement statement = jdbcTemplate.getDataSource().getConnection().prepareStatement("delete from habito where id = ?");
-            statement.setLong(1, id);
-
-            statement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update("delete from habito where id = ?", id);
     }
 }
