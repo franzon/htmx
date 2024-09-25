@@ -30,7 +30,7 @@ public class HabitosController {
         var habito = habitosService.detalhesHabito(id);
 
         if (habito.isEmpty())
-            throw new RuntimeException("erro1!!!");
+            return "erro";
 
         model.addAttribute("habito", habito.get());
 
@@ -43,7 +43,7 @@ public class HabitosController {
     }
 
     @PostMapping
-    public String criarHabito(@ModelAttribute CriarHabitoRequest criarHabitoRequest, Model model) {
+    public String criarHabito(@ModelAttribute CriarHabitoRequest criarHabitoRequest) {
         Habito habito = Habito.builder()
                 .titulo(criarHabitoRequest.getTitulo())
                 .recorrencia(Recorrencia.valueOf(criarHabitoRequest.getRecorrencia()))
@@ -56,7 +56,7 @@ public class HabitosController {
     }
 
     @PostMapping("/atualizar")
-    public String atualizarHabito(@ModelAttribute AtualizarHabitoRequest atualizarHabitoRequest, Model model) {
+    public String atualizarHabito(@ModelAttribute AtualizarHabitoRequest atualizarHabitoRequest) {
         Habito habito = Habito.builder()
                 .id(atualizarHabitoRequest.getId())
                 .titulo(atualizarHabitoRequest.getTitulo())
